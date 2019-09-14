@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  fullsnack:
+    image: ${DOCKER_REGISTRY-}fullsnack
+    build:
+      context: .
+      dockerfile: FullSnack/Dockerfile

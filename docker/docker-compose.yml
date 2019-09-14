@@ -1,9 +1,0 @@
-version: '3'
-services:
-  fullsnackapi:
-    image: "fullsnackapi:latest"
-    build:
-      context: ..
-      dockerfile: FullSnackApi/Dockerfile
-    # ports:
-    #   - "5000:5000"
