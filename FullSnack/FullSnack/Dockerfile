@@ -1,20 +1,13 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-stretch-slim AS base
+FROM microsoft/dotnet:2.2-sdk as build
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
-WORKDIR /src
-COPY ["FullSnack/FullSnack.csproj", "FullSnack/"]
-RUN dotnet restore "FullSnack/FullSnack.csproj"
-COPY . .
-WORKDIR "/src/FullSnack"
-RUN dotnet build "FullSnack.csproj" -c Release -o /app
+COPY *.csproj ./
+RUN dotnet restore 
 
-FROM build AS publish
-RUN dotnet publish "FullSnack.csproj" -c Release -o /app
+COPY . ./
+RUN dotnet publish -c Release -o out
 
-FROM base AS final
+FROM microsoft/dotnet:2.2-sdk 
 WORKDIR /app
-COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "FullSnack.dll"]
+COPY --from=build /app/out .
+ENTRYPOINT ["dotnet", "FullSnack.dll"] 
